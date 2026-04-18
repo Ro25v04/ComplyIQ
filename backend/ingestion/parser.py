@@ -1,3 +1,5 @@
+# Document parser to parse pdf and docs
+
 import pymupdf
 import docx
 from pathlib import Path
