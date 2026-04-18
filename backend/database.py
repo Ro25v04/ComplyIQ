@@ -1,3 +1,5 @@
+# To connect to the postgres database
+
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from contextlib import contextmanager

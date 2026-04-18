@@ -1,3 +1,6 @@
+# Loads environment variables from .env into a settings object that any file can import and use
+
+
 from pydantic_settings import BaseSettings
 
 
