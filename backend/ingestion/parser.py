@@ -16,7 +16,7 @@ def parse_pdf(file_path: str) -> list[ParsedPage]:
     pages = []
     with pymupdf.open(file_path) as doc:
         for i, page in enumerate(doc, start=1):
-            text = page.get_text().strip()  # Extract raw text and remove whitespace
+            text = page.get_text().strip()  # Extract raw text and remove whitespaces
             if text:
                 pages.append(ParsedPage(page_number=i, text=text))
     return pages
