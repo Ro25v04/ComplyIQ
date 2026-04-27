@@ -18,6 +18,8 @@ PII_ENTITIES = [
     "AU_DRIVERS_LICENCE",
     "AU_BSB",
     "AU_BANK_ACCOUNT",
+    "AU_SALARY",
+    "AU_DOB",
 ]
 
 # Terms that should never be anonymised
@@ -103,6 +105,24 @@ def _build_analyzer() -> AnalyzerEngine:
         supported_entity="AU_BANK_ACCOUNT",
         patterns=[Pattern("au_bank_account", r"\b\d{6,10}\b", 0.5)],
         context=["account", "account number", "bank account"],
+    ))
+
+    # Salary figures — dollar amounts with context
+    analyzer.registry.add_recognizer(PatternRecognizer(
+        supported_entity="AU_SALARY",
+        patterns=[Pattern("au_salary", r"\$\s?\d{1,3}(?:,\d{3})*(?:\.\d{2})?", 0.7)],
+        context=["salary", "wage", "remuneration", "compensation", "package", "earn", "paid", "income", "annual"],
+    ))
+
+    # Date of birth — common AU formats DD/MM/YYYY, DD-MM-YYYY, DD Month YYYY
+    analyzer.registry.add_recognizer(PatternRecognizer(
+        supported_entity="AU_DOB",
+        patterns=[
+            Pattern("au_dob_slash", r"\b\d{1,2}/\d{1,2}/\d{4}\b", 0.7),
+            Pattern("au_dob_dash", r"\b\d{1,2}-\d{1,2}-\d{4}\b", 0.7),
+            Pattern("au_dob_text", r"\b\d{1,2}\s+(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{4}\b", 0.8),
+        ],
+        context=["date of birth", "dob", "born", "birthday"],
     ))
 
     return analyzer

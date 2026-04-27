@@ -17,6 +17,10 @@ TEST_TEXTS = [
     "BSB 012-345 account number 12345678",
     # ABN
     "The company ABN is 51 824 753 556",
+    # Salary
+    "Employee salary is $95,000.00 per annum as per the remuneration package",
+    # Date of birth
+    "Employee date of birth is 15/03/1990 as per employment records",
     # Regulatory text — should stay unchanged
     "The Privacy Act 1988 requires organisations to notify the OAIC within 30 days of an eligible data breach under the NDB scheme",
     # Mixed PII and regulatory
