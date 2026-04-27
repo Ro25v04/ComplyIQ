@@ -4,9 +4,13 @@ from backend.retrieval.vector_search import vector_search
 from backend.retrieval.bm25_search import bm25_search
 from backend.retrieval.rrf import reciprocal_rank_fusion
 from backend.retrieval.reranker import rerank
+from backend.security.presidio import anonymise
 
 
 def retrieve(query: str) -> list[dict]:
+    # Strip PII from query before hitting any external API
+    query = anonymise(query)
+
     # Step 1 — parallel semantic and keyword search
     vector_results = vector_search(query)
     bm25_results = bm25_search(query)
