@@ -28,6 +28,7 @@ def bm25_search(query: str) -> list[dict]:
     tokenized_query = query.lower().split()
     scores = bm25.get_scores(tokenized_query)
 
+    # Get top 20 indices 
     top_indices = np.argsort(scores)[::-1][:TOP_K]
 
     results = []
