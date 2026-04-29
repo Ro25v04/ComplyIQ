@@ -12,8 +12,12 @@ presidio-analyzer
 presidio-anonymizer
 spacy
 langchain
+langchain-core
 langchain-community
 langchain-groq
+groq
+requests
+beautifulsoup4
 cohere
 langfuse
 boto3
