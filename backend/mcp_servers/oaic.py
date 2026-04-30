@@ -43,4 +43,4 @@ def fetch_oaic(topic: str) -> str:
     lines = [line for line in text.splitlines() if line.strip()]
     cleaned = "\n".join(lines[:200])
 
-    return f"[oaic.gov.au — {topic}]\n\n{cleaned}"
+    return f"[oaic.gov.au - {topic}]\n\n{cleaned}"
