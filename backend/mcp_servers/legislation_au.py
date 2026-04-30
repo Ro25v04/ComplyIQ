@@ -46,4 +46,4 @@ def fetch_legislation(act_name: str) -> str:
     lines = [line for line in text.splitlines() if line.strip()]
     cleaned = "\n".join(lines[:200])
 
-    return f"[legislation.gov.au — {act_name}]\n\n{cleaned}"
+    return f"[legislation.gov.au - {act_name}]\n\n{cleaned}"
