@@ -12,6 +12,8 @@ KNOWN_ACTS = {
 
 HEADERS = {"User-Agent": "ComplyAU/1.0 (compliance research tool)"}
 
+# inputs the name of the act and outputs the content
+
 
 def fetch_legislation(act_name: str) -> str:
     key = act_name.lower().strip()
@@ -38,7 +40,8 @@ def fetch_legislation(act_name: str) -> str:
         tag.decompose()
 
     main = soup.find("main") or soup.find("div", class_="content") or soup.body
-    text = main.get_text(separator="\n", strip=True) if main else soup.get_text(separator="\n", strip=True)
+    text = main.get_text(separator="\n", strip=True) if main else soup.get_text(
+        separator="\n", strip=True)
 
     lines = [line for line in text.splitlines() if line.strip()]
     cleaned = "\n".join(lines[:200])
