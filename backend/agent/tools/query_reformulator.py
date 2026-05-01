@@ -1,4 +1,4 @@
-from langchain_core.tools import Tool
+from langchain_core.tools import tool
 from backend.llm.generator import get_client
 
 MODEL = "llama-3.3-70b-versatile"
@@ -9,9 +9,13 @@ Use correct Australian regulatory terminology (Privacy Act 1988, APP, NDB, OAIC,
 Return ONLY the rewritten query — no explanation, no preamble."""
 
 
-def reformulate(query: str) -> str:
+@tool
+def query_reformulator(query: str) -> str:
+    """Rewrite a vague or unclear compliance question into a precise, technical query
+    using correct Australian regulatory terminology.
+    Use this tool FIRST when the user's question is ambiguous or uses
+    plain language instead of legal or regulatory terms."""
     client = get_client()
-
     response = client.chat.completions.create(
         model=MODEL,
         messages=[
@@ -20,17 +24,4 @@ def reformulate(query: str) -> str:
         ],
         temperature=0.1,
     )
-
     return response.choices[0].message.content.strip()
-
-
-query_reformulator_tool = Tool(
-    name="query_reformulator",
-    func=reformulate,
-    description=(
-        "Rewrite a vague or unclear compliance question into a precise, "
-        "technical query using correct Australian regulatory terminology. "
-        "Use this tool FIRST when the user's question is ambiguous or uses "
-        "plain language instead of legal/regulatory terms."
-    ),
-)

@@ -1,4 +1,4 @@
-from langchain_core.tools import Tool
+from langchain_core.tools import tool
 from backend.llm.generator import get_client
 
 MODEL = "llama-3.3-70b-versatile"
@@ -26,9 +26,15 @@ If no gaps are found, state: "No compliance gaps identified."
 """
 
 
-def identify_gaps(input_text: str) -> str:
+@tool
+def gap_identifier(input_text: str) -> str:
+    """Identify compliance gaps between a company policy and Australian law.
+    Use this tool when you have retrieved both what the company policy says
+    and what the actual legislation or regulation requires.
+    Input should contain both the policy text and the legal requirement text
+    so they can be compared.
+    Returns a list of gaps, compliant areas, and recommendations."""
     client = get_client()
-
     response = client.chat.completions.create(
         model=MODEL,
         messages=[
@@ -37,19 +43,4 @@ def identify_gaps(input_text: str) -> str:
         ],
         temperature=0.1,
     )
-
     return response.choices[0].message.content.strip()
-
-
-gap_identifier_tool = Tool(
-    name="gap_identifier",
-    func=identify_gaps,
-    description=(
-        "Identify compliance gaps between a company policy and Australian law. "
-        "Use this tool when you have retrieved both what the company policy says "
-        "and what the actual legislation or regulation requires. "
-        "Input should contain both the policy text and the legal requirement text "
-        "so they can be compared. "
-        "Returns a list of gaps, compliant areas, and recommendations."
-    ),
-)

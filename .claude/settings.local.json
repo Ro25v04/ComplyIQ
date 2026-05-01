@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(venv/Scripts/python --version)",
+      "Bash(venv/Scripts/pip show *)"
+    ]
+  }
+}
