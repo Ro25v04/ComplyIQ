@@ -6,6 +6,7 @@ from backend.agent.tools.query_reformulator import query_reformulator
 from backend.agent.tools.live_fetcher import live_fetcher
 from backend.agent.tools.citation_validator import citation_validator
 from backend.agent.tools.gap_identifier import gap_identifier
+from backend.monitoring.langfuse_client import observe, get_client
 
 MODEL = "gpt-4o-mini"
 
@@ -51,7 +52,9 @@ def get_llm():
     return _llm
 
 
+@observe()
 def run_agent(query: str) -> str:
+    lf = get_client()
     llm = get_llm()
 
     messages = [
@@ -59,12 +62,15 @@ def run_agent(query: str) -> str:
         HumanMessage(content=query),
     ]
 
+    final_answer = "Agent reached maximum iterations without a final answer."
+
     for _ in range(8):
         response = llm.invoke(messages)
         messages.append(response)
 
         if not response.tool_calls:
-            return response.content or "No response generated."
+            final_answer = response.content or "No response generated."
+            break
 
         for tool_call in response.tool_calls:
             tool_name = tool_call["name"]
@@ -72,11 +78,10 @@ def run_agent(query: str) -> str:
 
             print(f"\n[Tool Call] {tool_name}({tool_args})")
 
-            tool_fn = TOOL_REGISTRY.get(tool_name)
-            if tool_fn:
-                tool_result = tool_fn.invoke(tool_args)
-            else:
-                tool_result = f"Unknown tool: {tool_name}"
+            with lf.start_as_current_observation(name=tool_name, input=tool_args):
+                tool_fn = TOOL_REGISTRY.get(tool_name)
+                tool_result = tool_fn.invoke(tool_args) if tool_fn else f"Unknown tool: {tool_name}"
+                lf.update_current_span(output=str(tool_result)[:500])
 
             print(f"[Tool Result] {str(tool_result)[:200]}...")
 
@@ -85,4 +90,4 @@ def run_agent(query: str) -> str:
                 tool_call_id=tool_call["id"],
             ))
 
-    return "Agent reached maximum iterations without a final answer."
+    return final_answer
