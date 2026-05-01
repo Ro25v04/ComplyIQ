@@ -25,3 +25,4 @@ langfuse
 boto3
 ragas
 httpx
+datasets
