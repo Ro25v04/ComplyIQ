@@ -11,6 +11,8 @@ class Settings(BaseSettings):
     r2_secret_access_key: str = ""
     r2_bucket_name: str = ""
     groq_api_key: str = ""
+    gemini_api_key: str = ""
+    openai_api_key: str = ""
     cohere_api_key: str = ""
     langfuse_public_key: str = ""
     langfuse_secret_key: str = ""

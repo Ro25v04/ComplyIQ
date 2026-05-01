@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(venv/Scripts/python --version)",
-      "Bash(venv/Scripts/pip show *)"
+      "Bash(venv/Scripts/pip show *)",
+      "Bash(venv/Scripts/python -c ' *)"
     ]
   }
 }
