@@ -1,0 +1,42 @@
+[
+    {
+        "question": "What is the data retention period for customer records under the company policy?",
+        "ground_truth": "Under the company policy, customer records must be retained for 7 years."
+    },
+    {
+        "question": "What is the data retention period for employee records?",
+        "ground_truth": "Employee records must be retained for 7 years under the company policy."
+    },
+    {
+        "question": "What is the data retention period for marketing data?",
+        "ground_truth": "Marketing data must be retained for 2 years under the company policy."
+    },
+    {
+        "question": "How long does Acme Corp have to notify the OAIC after a data breach?",
+        "ground_truth": "Acme Corp must notify the OAIC within 30 days of becoming aware of an eligible data breach under the Notifiable Data Breaches scheme."
+    },
+    {
+        "question": "What encryption standard does Acme Corp use for data security?",
+        "ground_truth": "Acme Corp implements AES-256 encryption for data security."
+    },
+    {
+        "question": "What is the purpose of the Acme Corp privacy policy?",
+        "ground_truth": "The policy outlines how Acme Corp collects, uses, and stores personal information in accordance with the Privacy Act 1988."
+    },
+    {
+        "question": "Can Acme Corp disclose personal information to third parties without consent?",
+        "ground_truth": "Personal information will not be disclosed to third parties without explicit consent, except where required by law."
+    },
+    {
+        "question": "What security protocols does Acme Corp implement?",
+        "ground_truth": "Acme Corp implements AES-256 encryption, TLS 1.3, MFA, and annual audits."
+    },
+    {
+        "question": "Who does the Acme Corp privacy policy apply to?",
+        "ground_truth": "The policy applies to all employees, contractors, and third-party vendors who handle personal information."
+    },
+    {
+        "question": "What scheme governs data breach notification requirements for Acme Corp?",
+        "ground_truth": "The Notifiable Data Breaches (NDB) scheme governs data breach notification requirements for Acme Corp."
+    }
+]
