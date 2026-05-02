@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -13,6 +13,8 @@ export default function AppPage() {
   const [answer, setAnswer] = useState("");
   const [querying, setQuerying] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => { fetchDocuments(); }, []);
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -41,9 +43,10 @@ export default function AppPage() {
   async function fetchDocuments() {
     try {
       const res = await fetch(`${API_URL}/documents`);
-      const data = await res.json();
-      setDocuments(data);
-    } catch {}
+      if (res.ok) setDocuments(await res.json());
+    } catch {
+      // silently fail — backend may not be running
+    }
   }
 
   async function handleQuery(e: React.FormEvent) {
