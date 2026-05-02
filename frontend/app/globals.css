@@ -2,21 +2,12 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --foreground: #1A1A2E;
+  --navy: #0F1C2E;
+  --navy-light: #1B3A5C;
+  --grey: #6B7280;
+  --border: #E5E7EB;
+  --surface: #F8F9FA;
 }
 
 body {
