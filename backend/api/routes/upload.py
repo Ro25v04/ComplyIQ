@@ -48,7 +48,8 @@ def upload_document(file: UploadFile = File(...)):
 
         # Run ingestion pipeline
         pages = parse_document(tmp_path)
-        chunks = chunk_pages(pages, source_document=file.filename)
+        doc_id = r2_key.split("/")[1].split(".")[0]
+        chunks = chunk_pages(pages, document_id=doc_id, source_document=file.filename)
         embedded = embed_chunks(chunks)
         inserted = index_chunks(embedded)
 

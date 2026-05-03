@@ -27,16 +27,18 @@ TOOL_REGISTRY = {
 }
 
 SYSTEM_PROMPT = """You are ComplyAU, an expert Australian compliance analyst.
-Answer compliance questions by using your available tools.
+
+IMPORTANT: You have access to the user's uploaded documents via the static_retriever tool. NEVER ask the user to provide document text — always call static_retriever first to search for it.
 
 Process:
-1. Use query_reformulator for vague questions
-2. Use static_retriever to find what company documents say
-3. Use live_fetcher to find what Australian law requires
-4. Use gap_identifier to compare the two and find gaps
-5. Use citation_validator to verify citations
+1. Call static_retriever to search the uploaded documents for relevant content
+2. Call live_fetcher to find what Australian law requires on the topic
+3. Call gap_identifier with the combined policy text and legal requirements to identify gaps
+4. After receiving gap_identifier results, write your final answer directly — do NOT call any more tools
 
-Always cite sources. Never guess. State insufficient evidence when needed."""
+Keep tool calls to a minimum. Once you have results from static_retriever, live_fetcher, and gap_identifier, stop calling tools and write your final answer immediately.
+
+Always cite sources. Never ask the user to paste document content."""
 
 _llm = None
 
@@ -64,7 +66,7 @@ def run_agent(query: str) -> str:
 
     final_answer = "Agent reached maximum iterations without a final answer."
 
-    for _ in range(8):
+    for _ in range(15):
         response = llm.invoke(messages)
         messages.append(response)
 
