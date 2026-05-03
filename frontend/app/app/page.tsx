@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -231,13 +232,26 @@ export default function AppPage() {
                   </div>
                 )}
                 <div
-                  className={`max-w-2xl rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap ${
+                  className={`max-w-2xl rounded-2xl px-4 py-3 text-sm leading-relaxed ${
                     msg.role === "user"
-                      ? "bg-[#0F1C2E] text-white rounded-tr-sm"
+                      ? "bg-[#0F1C2E] text-white rounded-tr-sm whitespace-pre-wrap"
                       : "bg-[#F8F9FA] text-[#1A1A2E] border border-[#E5E7EB] rounded-tl-sm"
                   }`}
                 >
-                  {msg.content}
+                  {msg.role === "user" ? msg.content : (
+                    <ReactMarkdown
+                      components={{
+                        h3: ({ children }) => <p className="font-semibold mt-2 mb-1">{children}</p>,
+                        strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+                        ul: ({ children }) => <ul className="list-disc pl-4 space-y-1">{children}</ul>,
+                        ol: ({ children }) => <ol className="list-decimal pl-4 space-y-1">{children}</ol>,
+                        li: ({ children }) => <li>{children}</li>,
+                        p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                      }}
+                    >
+                      {msg.content}
+                    </ReactMarkdown>
+                  )}
                 </div>
                 {msg.role === "user" && (
                   <div className="w-7 h-7 rounded-full bg-gray-200 text-[#1A1A2E] text-xs flex items-center justify-center ml-3 mt-1 shrink-0">
