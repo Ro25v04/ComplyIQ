@@ -94,10 +94,11 @@ export default function AppPage() {
     setQuerying(true);
 
     try {
+      const history = messages.slice(-10);
       const res = await fetch(`${API_URL}/query`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: userMessage }),
+        body: JSON.stringify({ question: userMessage, history }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || "Query failed");

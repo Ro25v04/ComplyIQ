@@ -7,6 +7,7 @@ router = APIRouter()
 
 class QueryRequest(BaseModel):
     question: str
+    history: list[dict] = []
 
 
 class QueryResponse(BaseModel):
@@ -18,5 +19,5 @@ def query(request: QueryRequest):
     if not request.question.strip():
         raise HTTPException(status_code=400, detail="Question cannot be empty.")
 
-    answer = run_agent(request.question)
+    answer = run_agent(request.question, history=request.history)
     return QueryResponse(answer=answer)

@@ -1,5 +1,5 @@
 from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
+from langchain_core.messages import HumanMessage, AIMessage, SystemMessage, ToolMessage
 from backend.config import settings
 from backend.agent.tools.static_retriever import static_retriever
 from backend.agent.tools.query_reformulator import query_reformulator
@@ -54,14 +54,19 @@ def get_llm():
 
 
 @observe()
-def run_agent(query: str) -> str:
+def run_agent(query: str, history: list[dict] | None = None) -> str:
     lf = get_client()
     llm = get_llm()
 
-    messages = [
-        SystemMessage(content=SYSTEM_PROMPT),
-        HumanMessage(content=query),
-    ]
+    messages = [SystemMessage(content=SYSTEM_PROMPT)]
+
+    for msg in (history or []):
+        if msg["role"] == "user":
+            messages.append(HumanMessage(content=msg["content"]))
+        else:
+            messages.append(AIMessage(content=msg["content"]))
+
+    messages.append(HumanMessage(content=query))
 
     final_answer = "Agent reached maximum iterations without a final answer."
 
