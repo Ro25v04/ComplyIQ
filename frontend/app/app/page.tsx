@@ -103,18 +103,24 @@ export default function AppPage() {
       const reader = res.body!.getReader();
       const decoder = new TextDecoder();
       let fullContent = "";
-
-      setMessages((prev) => [...prev, { role: "agent", content: "" }]);
+      let isFirstChunk = true;
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
         fullContent += decoder.decode(value);
-        setMessages((prev) => {
-          const updated = [...prev];
-          updated[updated.length - 1] = { role: "agent", content: fullContent };
-          return updated;
-        });
+
+        if (isFirstChunk) {
+          setQuerying(false);
+          setMessages((prev) => [...prev, { role: "agent", content: fullContent }]);
+          isFirstChunk = false;
+        } else {
+          setMessages((prev) => {
+            const updated = [...prev];
+            updated[updated.length - 1] = { role: "agent", content: fullContent };
+            return updated;
+          });
+        }
       }
     } catch (err: unknown) {
       setMessages((prev) => [
