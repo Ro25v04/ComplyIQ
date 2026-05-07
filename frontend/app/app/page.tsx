@@ -93,14 +93,29 @@ export default function AppPage() {
 
     try {
       const history = messages.slice(-10);
-      const res = await fetch(`${API_URL}/query`, {
+      const res = await fetch(`${API_URL}/query/stream`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: userMessage, history }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || "Query failed");
-      setMessages((prev) => [...prev, { role: "agent", content: data.answer }]);
+      if (!res.ok) throw new Error("Query failed");
+
+      const reader = res.body!.getReader();
+      const decoder = new TextDecoder();
+      let fullContent = "";
+
+      setMessages((prev) => [...prev, { role: "agent", content: "" }]);
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        fullContent += decoder.decode(value);
+        setMessages((prev) => {
+          const updated = [...prev];
+          updated[updated.length - 1] = { role: "agent", content: fullContent };
+          return updated;
+        });
+      }
     } catch (err: unknown) {
       setMessages((prev) => [
         ...prev,
