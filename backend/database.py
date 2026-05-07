@@ -50,9 +50,42 @@ def init_db():
                 USING hnsw (embedding vector_cosine_ops);
             """)
 
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS documents (
+                    id              SERIAL PRIMARY KEY,
+                    filename        TEXT UNIQUE NOT NULL,
+                    r2_key          TEXT NOT NULL,
+                    created_at      TIMESTAMPTZ DEFAULT NOW()
+                );
+            """)
+
     print("Database initialised - chunks table and HNSW index ready.")
 
 
+
+
+def save_document_r2_key(filename: str, r2_key: str):
+    with get_db() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                INSERT INTO documents (filename, r2_key)
+                VALUES (%s, %s)
+                ON CONFLICT (filename) DO UPDATE SET r2_key = EXCLUDED.r2_key;
+            """, (filename, r2_key))
+
+
+def get_document_r2_key(filename: str) -> str | None:
+    with get_db() as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT r2_key FROM documents WHERE filename = %s", (filename,))
+            row = cur.fetchone()
+            return row["r2_key"] if row else None
+
+
+def delete_document_record(filename: str):
+    with get_db() as conn:
+        with conn.cursor() as cur:
+            cur.execute("DELETE FROM documents WHERE filename = %s", (filename,))
 
 
 def delete_document_chunks(filename: str) -> int:

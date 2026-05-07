@@ -1,7 +1,7 @@
 import boto3
 from fastapi import APIRouter, HTTPException
 from backend.config import settings
-from backend.database import delete_document_chunks
+from backend.database import delete_document_chunks, get_document_r2_key, delete_document_record
 
 router = APIRouter()
 
@@ -23,16 +23,14 @@ def delete_document(filename: str):
     if deleted == 0:
         raise HTTPException(status_code=404, detail="Document not found")
 
-    # Delete file from R2 by listing and matching filename
-    try:
-        r2 = get_r2_client()
-        response = r2.list_objects_v2(Bucket=settings.r2_bucket_name, Prefix="documents/")
-        objects = response.get("Contents", [])
-        for obj in objects:
-            if obj["Key"].endswith(filename) or filename in obj["Key"]:
-                r2.delete_object(Bucket=settings.r2_bucket_name, Key=obj["Key"])
-                break
-    except Exception:
-        pass
+    # Delete file from R2 using stored key
+    r2_key = get_document_r2_key(filename)
+    if r2_key:
+        try:
+            r2 = get_r2_client()
+            r2.delete_object(Bucket=settings.r2_bucket_name, Key=r2_key)
+        except Exception:
+            pass
+        delete_document_record(filename)
 
     return {"deleted": filename, "chunks_removed": deleted}

@@ -4,6 +4,7 @@ import tempfile
 import boto3
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from backend.config import settings
+from backend.database import save_document_r2_key
 from backend.ingestion.parser import parse_document
 from backend.ingestion.chunker import chunk_pages
 from backend.ingestion.embedder import embed_chunks
@@ -45,6 +46,9 @@ def upload_document(file: UploadFile = File(...)):
             Body=file_bytes,
             ContentType=file.content_type or "application/octet-stream",
         )
+
+        # Save R2 key mapping for later deletion
+        save_document_r2_key(file.filename, r2_key)
 
         # Run ingestion pipeline
         pages = parse_document(tmp_path)
