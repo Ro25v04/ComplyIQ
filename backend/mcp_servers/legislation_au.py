@@ -12,11 +12,14 @@ KNOWN_ACTS = {
 
 HEADERS = {"User-Agent": "ComplyAU/1.0 (compliance research tool)"}
 
-# inputs the name of the act and outputs the content
+_cache: dict[str, str] = {}
 
 
 def fetch_legislation(act_name: str) -> str:
     key = act_name.lower().strip()
+
+    if key in _cache:
+        return _cache[key]
 
     path = None
     for known_name, known_path in KNOWN_ACTS.items():
@@ -46,4 +49,6 @@ def fetch_legislation(act_name: str) -> str:
     lines = [line for line in text.splitlines() if line.strip()]
     cleaned = "\n".join(lines[:200])
 
-    return f"[legislation.gov.au - {act_name}]\n\n{cleaned}"
+    result = f"[legislation.gov.au - {act_name}]\n\n{cleaned}"
+    _cache[key] = result
+    return result

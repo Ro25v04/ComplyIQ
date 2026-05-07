@@ -7,11 +7,9 @@ import ReactMarkdown from "react-markdown";
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 const STATUS_MESSAGES = [
-  "Reformulating query...",
   "Searching documents...",
-  "Fetching live legislation...",
-  "Identifying compliance gaps...",
-  "Compiling analysis...",
+  "Analysing...",
+  "Compiling response...",
 ];
 
 type Message = {
