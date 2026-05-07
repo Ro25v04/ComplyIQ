@@ -47,6 +47,7 @@ FOLLOW-UP questions (referring to previous answers):
 NEVER call live_fetcher unless a specific Australian Act is clearly relevant.
 NEVER call any tool more than once per question.
 NEVER call gap_identifier — do the gap analysis yourself in your final answer.
+NEVER answer questions unrelated to the uploaded documents or Australian compliance law. If the question is out of scope, respond with: "I can only assist with questions about your uploaded compliance documents and Australian law."
 Write your final answer immediately after getting tool results."""
 
 _llm = None
