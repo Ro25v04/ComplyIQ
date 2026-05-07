@@ -53,5 +53,14 @@ def init_db():
     print("Database initialised - chunks table and HNSW index ready.")
 
 
+
+
+def delete_document_chunks(filename: str) -> int:
+    with get_db() as conn:
+        with conn.cursor() as cur:
+            cur.execute("DELETE FROM chunks WHERE source_document = %s", (filename,))
+            return cur.rowcount
+
+
 if __name__ == "__main__":
     init_db()

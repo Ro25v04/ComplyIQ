@@ -180,11 +180,23 @@ export default function AppPage() {
             ) : (
               <ul className="space-y-2">
                 {documents.map((doc) => (
-                  <li key={doc.filename} className="bg-white border border-[#E5E7EB] rounded-lg p-3">
-                    <p className="text-xs font-medium text-[#1A1A2E] truncate" title={doc.filename}>
-                      {doc.filename}
-                    </p>
-                    <p className="text-xs text-[#6B7280] mt-0.5">{doc.chunks} chunks indexed</p>
+                  <li key={doc.filename} className="bg-white border border-[#E5E7EB] rounded-lg p-3 flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="text-xs font-medium text-[#1A1A2E] truncate" title={doc.filename}>
+                        {doc.filename}
+                      </p>
+                      <p className="text-xs text-[#6B7280] mt-0.5">{doc.chunks} chunks indexed</p>
+                    </div>
+                    <button
+                      onClick={async () => {
+                        setDocuments((prev) => prev.filter((d) => d.filename !== doc.filename));
+                        await fetch(`${API_URL}/documents/${encodeURIComponent(doc.filename)}`, { method: "DELETE" });
+                      }}
+                      className="text-[#9CA3AF] hover:text-red-500 transition-colors shrink-0 text-sm leading-none mt-0.5"
+                      title="Delete document"
+                    >
+                      ✕
+                    </button>
                   </li>
                 ))}
               </ul>
