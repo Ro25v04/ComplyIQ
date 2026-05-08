@@ -2,7 +2,7 @@ from langchain_core.tools import tool
 from backend.mcp_servers.legislation_au import fetch_legislation
 from backend.mcp_servers.oaic import fetch_oaic
 
-LEGISLATION_KEYWORDS = ["privacy act", "fair work act", "corporations act", "work health and safety act"]
+LEGISLATION_KEYWORDS = ["privacy act", "fair work act", "corporations act", "work health and safety act", "competition and consumer act", "australian consumer law", "superannuation guarantee", "spam act", "age discrimination act"]
 OAIC_KEYWORDS = ["data breach", "australian privacy principles", "privacy impact", "credit reporting", "oaic"]
 
 
