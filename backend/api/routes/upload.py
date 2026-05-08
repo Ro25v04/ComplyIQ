@@ -9,6 +9,7 @@ from backend.ingestion.parser import parse_document
 from backend.ingestion.chunker import chunk_pages
 from backend.ingestion.embedder import embed_chunks
 from backend.ingestion.indexer import index_chunks
+from backend.ingestion.classifier import is_compliance_document
 
 router = APIRouter()
 
@@ -47,11 +48,18 @@ def upload_document(file: UploadFile = File(...)):
             ContentType=file.content_type or "application/octet-stream",
         )
 
-        # Save R2 key mapping for later deletion
-        save_document_r2_key(file.filename, r2_key)
-
         # Run ingestion pipeline
         pages = parse_document(tmp_path)
+
+        # Reject non-compliance documents before indexing
+        if not is_compliance_document(pages[0].text):
+            raise HTTPException(
+                status_code=400,
+                detail="This does not appear to be a compliance or legal document. Please upload contracts, policies, or legal agreements."
+            )
+
+        # Save R2 key mapping for later deletion
+        save_document_r2_key(file.filename, r2_key)
         doc_id = r2_key.split("/")[1].split(".")[0]
         chunks = chunk_pages(pages, document_id=doc_id, source_document=file.filename)
         embedded = embed_chunks(chunks)
