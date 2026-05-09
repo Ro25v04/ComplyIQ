@@ -137,7 +137,7 @@ export default function AppPage() {
       {/* Navbar */}
       <nav className="bg-[#0F1C2E] text-white px-8 py-4 flex items-center justify-between shrink-0">
         <Link href="/" className="text-xl font-semibold tracking-tight hover:opacity-80 transition-opacity">
-          ComplyIQ
+          ComplyAU
         </Link>
         <span className="text-sm text-gray-300">Compliance Analyser</span>
       </nav>
@@ -341,7 +341,7 @@ export default function AppPage() {
               </button>
             </form>
             <p className="text-xs text-[#9CA3AF] mt-2">
-              ComplyIQ analyses Australian law in real time. Always verify with a qualified legal professional.
+              ComplyAU analyses Australian law in real time. Always verify with a qualified legal professional.
             </p>
           </div>
         </div>

@@ -5,7 +5,7 @@ export default function LandingPage() {
     <div className="min-h-screen flex flex-col">
       {/* Navbar */}
       <nav className="bg-[#0F1C2E] text-white px-8 py-4 flex items-center justify-between">
-        <span className="text-xl font-semibold tracking-tight">ComplyIQ</span>
+        <span className="text-xl font-semibold tracking-tight">ComplyAU</span>
         <div className="flex items-center gap-6">
           <a href="#features" className="text-sm text-gray-300 hover:text-white transition-colors">Features</a>
           <a href="#how-it-works" className="text-sm text-gray-300 hover:text-white transition-colors">How it works</a>
@@ -79,7 +79,7 @@ export default function LandingPage() {
           <h2 className="text-2xl font-bold text-center mb-14 text-[#1A1A2E]">How it works</h2>
           <div className="space-y-8">
             {[
-              { step: "01", title: "Upload your compliance documents", desc: "Drag and drop your PDF or DOCX files. ComplyIQ parses, chunks, and indexes them automatically." },
+              { step: "01", title: "Upload your compliance documents", desc: "Drag and drop your PDF or DOCX files. ComplyAU parses, chunks, and indexes them automatically." },
               { step: "02", title: "Ask a compliance question", desc: "Type any question about your obligations. The AI agent searches your documents and live Australian legislation." },
               { step: "03", title: "Get a structured gap analysis", desc: "Receive a detailed report with what your policy says, what the law requires, and exactly where the gaps are." },
             ].map((s) => (
@@ -109,7 +109,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t border-[#E5E7EB] px-8 py-6 text-center text-sm text-[#6B7280]">
-        © {new Date().getFullYear()} ComplyIQ. Built for Australian businesses.
+        © {new Date().getFullYear()} ComplyAU. Built for Australian businesses.
       </footer>
     </div>
   );

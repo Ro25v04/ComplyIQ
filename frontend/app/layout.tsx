@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ComplyIQ — AI Compliance for Australian Businesses",
-  description: "Upload your compliance documents and ask questions. ComplyIQ analyses your policies against Australian law and identifies gaps instantly.",
+  title: "ComplyAU — AI Compliance for Australian Businesses",
+  description: "Upload your compliance documents and ask questions. ComplyAU analyses your policies against Australian law and identifies gaps instantly.",
 };
 
 export default function RootLayout({
