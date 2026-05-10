@@ -7,7 +7,8 @@
       "Bash(venv/Scripts/python -c \"import langfuse; print\\(langfuse.__version__\\); print\\(dir\\(langfuse\\)\\)\")",
       "Bash(venv/Scripts/python -c \"from langfuse import observe, get_client; print\\('observe ok'\\); lf = get_client\\(\\); print\\(type\\(lf\\)\\); print\\([m for m in dir\\(lf\\) if not m.startswith\\('_'\\)]\\)\")",
       "Bash(venv/Scripts/python -c \"from backend.main import app; print\\('App loaded OK'\\); print\\([r.path for r in app.routes]\\)\")",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Bash(python eval/run_eval.py)"
     ]
   }
 }

@@ -1,0 +1,69 @@
+{
+  "averages": {
+    "faithfulness": 1.0,
+    "answer_relevancy": 0.9755,
+    "context_precision": 0.9167
+  },
+  "per_question": [
+    {
+      "question": "What is the data retention period for customer records under the company policy?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9814,
+      "context_precision": 1.0
+    },
+    {
+      "question": "What is the data retention period for employee records?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9276,
+      "context_precision": 1.0
+    },
+    {
+      "question": "What is the data retention period for marketing data?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "context_precision": 0.5
+    },
+    {
+      "question": "How long does Acme Corp have to notify the OAIC after a data breach?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.976,
+      "context_precision": 1.0
+    },
+    {
+      "question": "What encryption standard does Acme Corp use for data security?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9528,
+      "context_precision": 1.0
+    },
+    {
+      "question": "What is the purpose of the Acme Corp privacy policy?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "context_precision": 1.0
+    },
+    {
+      "question": "Can Acme Corp disclose personal information to third parties without consent?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9878,
+      "context_precision": 1.0
+    },
+    {
+      "question": "What security protocols does Acme Corp implement?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "context_precision": 1.0
+    },
+    {
+      "question": "Who does the Acme Corp privacy policy apply to?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "context_precision": 0.6667
+    },
+    {
+      "question": "What scheme governs data breach notification requirements for Acme Corp?",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9291,
+      "context_precision": 1.0
+    }
+  ]
+}
