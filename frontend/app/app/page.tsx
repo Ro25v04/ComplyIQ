@@ -226,7 +226,6 @@ export default function AppPage() {
         {/* Header */}
         <header className="bg-[#F8F9FF] border-b border-[#C5C6CD] px-6 py-4 flex items-center justify-between shrink-0">
           <h2 className="font-semibold text-[#0B1C30]">AI Analysis</h2>
-          <span className="text-xs text-[#44474C]">Powered by GPT-4o mini · Australian law</span>
         </header>
 
         {/* Messages */}
