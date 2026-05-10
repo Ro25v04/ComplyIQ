@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FileText, MessageSquare, SearchCheck } from "lucide-react";
 
 const FRAMEWORKS = [
   { code: "Privacy Act", sub: "1988" },
@@ -92,26 +93,26 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
-                icon: "📄",
+                icon: <FileText size={24} strokeWidth={1.5} className="text-[#0F1C2E]" />,
                 title: "Upload Documents",
                 desc: "Securely upload PDF or DOCX compliance documents. The AI parses, chunks, and indexes them for instant retrieval.",
                 tag: "PDF & DOCX",
               },
               {
-                icon: "💬",
+                icon: <MessageSquare size={24} strokeWidth={1.5} className="text-[#0F1C2E]" />,
                 title: "Ask Questions",
                 desc: "Ask plain English questions about your obligations. Get structured answers backed by your documents and live legislation.",
                 tag: "LLM Powered",
               },
               {
-                icon: "🔍",
+                icon: <SearchCheck size={24} strokeWidth={1.5} className="text-[#0F1C2E]" />,
                 title: "Find Gaps",
                 desc: "Automatically identify where your internal policies fall short of Australian legal requirements — clause by clause.",
                 tag: "Gap Analysis",
               },
             ].map((f) => (
               <div key={f.title} className="bg-white border border-[#C5C6CD] rounded-xl p-6 flex flex-col gap-4 hover:shadow-sm transition-shadow">
-                <div className="text-3xl">{f.icon}</div>
+                <div className="w-10 h-10 bg-[#EFF4FF] rounded-lg flex items-center justify-center">{f.icon}</div>
                 <div>
                   <h3 className="font-semibold text-lg text-[#0B1C30] mb-2">{f.title}</h3>
                   <p className="text-sm text-[#44474C] leading-relaxed">{f.desc}</p>
