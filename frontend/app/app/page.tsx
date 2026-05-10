@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
+import { Scale } from "lucide-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -232,7 +233,9 @@ export default function AppPage() {
         <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4">
           {messages.length === 0 && !querying && (
             <div className="h-full flex flex-col items-center justify-center text-center">
-              <div className="text-5xl mb-4">⚖️</div>
+              <div className="w-14 h-14 bg-[#EFF4FF] rounded-xl flex items-center justify-center mb-4">
+                <Scale size={28} strokeWidth={1.5} className="text-[#0F1C2E]" />
+              </div>
               <h3 className="font-semibold text-[#0B1C30] mb-2">Ask a compliance question</h3>
               <p className="text-sm text-[#44474C] max-w-sm">
                 Upload a document and ask anything about your compliance obligations under Australian law.
