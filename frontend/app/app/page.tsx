@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
-import { Scale } from "lucide-react";
+import { Scale, UploadCloud } from "lucide-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -158,7 +158,11 @@ export default function AppPage() {
             className="border-2 border-dashed border-white/20 rounded-lg p-4 text-center cursor-pointer hover:border-white/40 hover:bg-white/5 transition-all duration-200"
             onClick={() => fileRef.current?.click()}
           >
-            <div className="text-2xl mb-1">{uploading ? <span className="inline-block animate-spin">⏳</span> : "📄"}</div>
+            <div className="flex justify-center mb-1">
+              {uploading
+                ? <span className="inline-block animate-spin text-[#BAC7DF] text-xl">↻</span>
+                : <UploadCloud size={24} strokeWidth={1.5} className="text-[#BAC7DF]" />}
+            </div>
             <p className="text-sm text-[#BAC7DF] font-medium">{uploading ? "Uploading..." : "Upload Document"}</p>
             <p className="text-xs text-[#78849B] mt-0.5">PDF or DOCX</p>
             <input ref={fileRef} type="file" accept=".pdf,.docx,.doc" className="hidden" onChange={handleUpload} disabled={uploading} />
