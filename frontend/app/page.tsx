@@ -42,9 +42,6 @@ export default function LandingPage() {
       <section className="bg-[#0F1C2E] text-white py-24 md:py-32 relative overflow-hidden">
         <div className="max-w-6xl mx-auto px-8 grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 px-3 py-1 rounded-full">
-              <span className="text-xs font-semibold uppercase tracking-widest text-[#BAC7DF]">Australian Regulatory AI</span>
-            </div>
             <h1 className="text-4xl md:text-5xl font-bold leading-tight tracking-tight">
               Legal compliance<br />simplified through<br />AI precision.
             </h1>
