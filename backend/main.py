@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.api.routes import upload, query, documents, delete
+from backend.api.routes import upload, query, documents, delete, report
 
 app = FastAPI(title="ComplyIQ API")
 
@@ -15,6 +15,7 @@ app.include_router(upload.router)
 app.include_router(query.router)
 app.include_router(documents.router)
 app.include_router(delete.router)
+app.include_router(report.router)
 
 
 @app.get("/health")

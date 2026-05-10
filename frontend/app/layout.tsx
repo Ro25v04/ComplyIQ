@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Public_Sans } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const publicSans = Public_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-public-sans",
+});
 
 export const metadata: Metadata = {
   title: "ComplyAU — AI Compliance for Australian Businesses",
@@ -16,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full">
-      <body className={`${inter.className} min-h-full flex flex-col bg-white text-[#1A1A2E]`}>
+      <body className={`${publicSans.variable} ${publicSans.className} min-h-full flex flex-col bg-[#F8F9FF] text-[#0B1C30]`}>
         {children}
       </body>
     </html>
