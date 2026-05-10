@@ -198,14 +198,9 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="bg-[#0F1C2E] border-t border-white/10 px-8 py-6">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
           <span className="font-semibold text-white">ComplyAU</span>
-          <p className="text-sm text-[#78849B]">© {new Date().getFullYear()} ComplyAU. Built for Australian businesses.</p>
-          <div className="flex gap-6">
-            {["Privacy Policy", "Terms of Service", "Contact"].map((link) => (
-              <a key={link} href="#" className="text-sm text-[#78849B] hover:text-white transition-colors">{link}</a>
-            ))}
-          </div>
+          <p className="text-sm text-[#78849B]">Built for Australian businesses.</p>
         </div>
       </footer>
     </div>
