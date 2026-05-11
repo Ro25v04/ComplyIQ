@@ -1,8 +1,8 @@
 {
   "averages": {
     "faithfulness": 1.0,
-    "answer_relevancy": 0.9755,
-    "context_precision": 0.9167
+    "answer_relevancy": 0.9698,
+    "context_precision": 0.9667
   },
   "per_question": [
     {
@@ -21,18 +21,18 @@
       "question": "What is the data retention period for marketing data?",
       "faithfulness": 1.0,
       "answer_relevancy": 1.0,
-      "context_precision": 0.5
+      "context_precision": 1.0
     },
     {
       "question": "How long does Acme Corp have to notify the OAIC after a data breach?",
       "faithfulness": 1.0,
-      "answer_relevancy": 0.976,
+      "answer_relevancy": 0.9193,
       "context_precision": 1.0
     },
     {
       "question": "What encryption standard does Acme Corp use for data security?",
       "faithfulness": 1.0,
-      "answer_relevancy": 0.9528,
+      "answer_relevancy": 0.953,
       "context_precision": 1.0
     },
     {

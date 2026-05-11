@@ -115,6 +115,7 @@ def run_agent(query: str, history: list[dict] | None = None) -> str:
 
 
 def stream_agent(query: str, history: list[dict] | None = None):
+    lf = get_client()
     llm_with_tools = get_llm()
     streaming_llm = ChatOpenAI(
         model=MODEL,
@@ -130,24 +131,31 @@ def stream_agent(query: str, history: list[dict] | None = None):
             messages.append(AIMessage(content=msg["content"]))
     messages.append(HumanMessage(content=query))
 
-    # Phase 1: Run tool calls (non-streaming)
-    for _ in range(10):
-        response = llm_with_tools.invoke(messages)
+    with lf.start_as_current_observation(name="stream_agent", input={"query": query}):
+        # Phase 1: Run tool calls (non-streaming)
+        for _ in range(10):
+            response = llm_with_tools.invoke(messages)
 
-        if not response.tool_calls:
-            break
+            if not response.tool_calls:
+                break
 
-        messages.append(response)
-        for tool_call in response.tool_calls:
-            tool_name = tool_call["name"]
-            tool_args = tool_call["args"]
-            print(f"\n[Tool Call] {tool_name}({tool_args})")
-            tool_fn = TOOL_REGISTRY.get(tool_name)
-            tool_result = tool_fn.invoke(tool_args) if tool_fn else f"Unknown tool: {tool_name}"
-            print(f"[Tool Result] {str(tool_result)[:200]}...")
-            messages.append(ToolMessage(content=str(tool_result), tool_call_id=tool_call["id"]))
+            messages.append(response)
+            for tool_call in response.tool_calls:
+                tool_name = tool_call["name"]
+                tool_args = tool_call["args"]
+                print(f"\n[Tool Call] {tool_name}({tool_args})")
+                with lf.start_as_current_observation(name=tool_name, input=tool_args):
+                    tool_fn = TOOL_REGISTRY.get(tool_name)
+                    tool_result = tool_fn.invoke(tool_args) if tool_fn else f"Unknown tool: {tool_name}"
+                    lf.update_current_span(output=str(tool_result)[:500])
+                print(f"[Tool Result] {str(tool_result)[:200]}...")
+                messages.append(ToolMessage(content=str(tool_result), tool_call_id=tool_call["id"]))
 
-    # Phase 2: Stream the final answer
-    for chunk in streaming_llm.stream(messages):
-        if chunk.content:
-            yield chunk.content
+        # Phase 2: Stream the final answer, collect full text for logging
+        full_response = ""
+        for chunk in streaming_llm.stream(messages):
+            if chunk.content:
+                full_response += chunk.content
+                yield chunk.content
+
+        lf.update_current_span(output={"response": full_response[:1000]})
