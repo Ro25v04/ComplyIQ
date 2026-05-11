@@ -27,8 +27,17 @@ async def _call_mcp_tool(tool_name: str, args: dict) -> str:
 
 
 def _run_async(tool_name: str, args: dict) -> str:
+    def run_in_thread():
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            return loop.run_until_complete(_call_mcp_tool(tool_name, args))
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
     with ThreadPoolExecutor(max_workers=1) as pool:
-        future = pool.submit(asyncio.run, _call_mcp_tool(tool_name, args))
+        future = pool.submit(run_in_thread)
         return future.result()
 
 
