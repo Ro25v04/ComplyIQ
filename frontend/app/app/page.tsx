@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
-import { Scale, UploadCloud } from "lucide-react";
+import { Scale, UploadCloud, User } from "lucide-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -265,8 +265,8 @@ export default function AppPage() {
           {messages.map((msg, i) => (
             <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} animate-fade-in`}>
               {msg.role === "agent" && (
-                <div className="w-7 h-7 rounded bg-[#0F1C2E] text-white text-xs flex items-center justify-center mr-3 mt-1 shrink-0 font-semibold">
-                  AI
+                <div className="w-7 h-7 rounded-full bg-[#0F1C2E] text-white flex items-center justify-center mr-3 mt-1 shrink-0">
+                  <Scale size={14} />
                 </div>
               )}
               <div
@@ -288,6 +288,7 @@ export default function AppPage() {
                       ol: ({ children }) => <ol className="list-decimal pl-4 space-y-1">{children}</ol>,
                       li: ({ children }) => <li>{children}</li>,
                       p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                      a: ({ href, children }) => <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">{children}</a>,
                     }}
                   >
                     {msg.content}
@@ -295,8 +296,8 @@ export default function AppPage() {
                 )}
               </div>
               {msg.role === "user" && (
-                <div className="w-7 h-7 rounded bg-[#D6E3FC] text-[#0F1C2E] text-xs flex items-center justify-center ml-3 mt-1 shrink-0 font-semibold">
-                  You
+                <div className="w-7 h-7 rounded-full bg-[#D6E3FC] text-[#0F1C2E] flex items-center justify-center ml-3 mt-1 shrink-0">
+                  <User size={14} />
                 </div>
               )}
             </div>
@@ -304,8 +305,8 @@ export default function AppPage() {
 
           {querying && (
             <div className="flex justify-start animate-fade-in">
-              <div className="w-7 h-7 rounded bg-[#0F1C2E] text-white text-xs flex items-center justify-center mr-3 mt-1 shrink-0 font-semibold">
-                AI
+              <div className="w-7 h-7 rounded-full bg-[#0F1C2E] text-white flex items-center justify-center mr-3 mt-1 shrink-0">
+                <Scale size={14} />
               </div>
               <div className="bg-[#DCE9FF] border border-[#C5C6CD] rounded-lg rounded-tl-sm px-4 py-3">
                 <div className="flex items-center gap-2 text-sm text-[#44474C]">
