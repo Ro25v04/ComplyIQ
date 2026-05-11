@@ -1,9 +1,35 @@
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 from langchain_core.tools import tool
-from backend.mcp_servers.legislation_au import fetch_legislation
-from backend.mcp_servers.oaic import fetch_oaic
+from mcp import ClientSession
+from mcp.client.sse import sse_client
+from backend.config import settings
 
-LEGISLATION_KEYWORDS = ["privacy act", "fair work act", "corporations act", "work health and safety act", "competition and consumer act", "australian consumer law", "superannuation guarantee", "spam act", "age discrimination act"]
-OAIC_KEYWORDS = ["data breach", "australian privacy principles", "privacy impact", "credit reporting", "oaic"]
+LEGISLATION_KEYWORDS = [
+    "privacy act", "fair work act", "corporations act",
+    "work health and safety act", "competition and consumer act",
+    "australian consumer law", "superannuation guarantee",
+    "spam act", "age discrimination act", "national employment standards",
+    "unpaid internship",
+]
+OAIC_KEYWORDS = [
+    "data breach", "australian privacy principles",
+    "privacy impact", "credit reporting", "oaic",
+]
+
+
+async def _call_mcp_tool(tool_name: str, args: dict) -> str:
+    async with sse_client(settings.mcp_server_url) as (read, write):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+            result = await session.call_tool(tool_name, args)
+            return result.content[0].text if result.content else "No result returned."
+
+
+def _run_async(tool_name: str, args: dict) -> str:
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        future = pool.submit(asyncio.run, _call_mcp_tool(tool_name, args))
+        return future.result()
 
 
 @tool
@@ -18,12 +44,12 @@ def live_fetcher(query: str) -> str:
 
     for keyword in LEGISLATION_KEYWORDS:
         if keyword in key:
-            results.append(fetch_legislation(query))
+            results.append(_run_async("fetch_legislation_tool", {"act_name": query}))
             break
 
     for keyword in OAIC_KEYWORDS:
         if keyword in key:
-            results.append(fetch_oaic(query))
+            results.append(_run_async("fetch_oaic_guidance", {"topic": query}))
             break
 
     if not results:

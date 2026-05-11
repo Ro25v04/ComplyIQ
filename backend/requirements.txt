@@ -23,6 +23,7 @@ beautifulsoup4
 cohere
 langfuse
 boto3
+mcp[cli]
 ragas
 httpx
 datasets

@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     langfuse_secret_key: str = ""
     langfuse_host: str = "https://cloud.langfuse.com"
     api_key: str = ""
+    mcp_server_url: str = "https://web-production-d19521.up.railway.app/sse"
 
     class Config:
         env_file = ".env"
