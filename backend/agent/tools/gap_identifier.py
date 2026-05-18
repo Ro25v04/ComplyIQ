@@ -1,6 +1,8 @@
 from langchain_core.tools import tool
 from backend.llm.generator import get_client
 
+# This tool is intentionally excluded from the agent's TOOL_REGISTRY in react_agent.py 
+# the agent performs gap analysis directly in its final answer for richer, cited output
 MODEL = "llama-3.3-70b-versatile"
 
 SYSTEM_PROMPT = """You are an expert Australian compliance analyst.

@@ -61,6 +61,8 @@ def generate_report(request: ReportRequest):
     try:
         data = json.loads(response.content)
     except json.JSONDecodeError:
+        # Even at temperature=0, GPT-4o-mini occasionally wraps JSON in markdown
+        # code fences (```json ... ```) — strip to the first { ... } as a fallback
         content = response.content
         start = content.find("{")
         end = content.rfind("}") + 1
@@ -68,6 +70,8 @@ def generate_report(request: ReportRequest):
 
     gaps = data.get("gaps", [])
 
+    # Deduction weights: critical=-20, major=-10, minor=-5
+    # Thresholds: >=80 → Low, >=60 → Medium, <60 → High
     score = 100
     for gap in gaps:
         severity = gap.get("severity", "minor")

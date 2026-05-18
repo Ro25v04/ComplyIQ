@@ -12,6 +12,7 @@ def index_chunks(embedded_chunks: list[tuple[TextChunk, list[float]]]) -> int:
                 # anonymise PII before storing in PostgreSQL
                 safe_content = anonymise(chunk.content)
 
+                # ON CONFLICT DO NOTHING makes re-uploading the same document idempotent
                 cur.execute("""
                     INSERT INTO chunks (chunk_id, document_id, source_document, page_number, content, embedding)
                     VALUES (%s, %s, %s, %s, %s, %s)

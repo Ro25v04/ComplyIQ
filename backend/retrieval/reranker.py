@@ -1,10 +1,11 @@
-# Reranks RRF results using Cohere cross-encoder model
-
 import cohere
 from backend.config import settings
 
-TOP_K = 6
+# rerank-english-v3.0 is a cross-encoder: it reads the query and document together,
+# making it more accurate than the bi-encoder similarity used in vector_search
 RERANK_MODEL = "rerank-english-v3.0"
+# Narrows RRF's top-30 down to the 6 most relevant chunks passed to the LLM
+TOP_K = 6
 
 # Load Cohere client once
 _client = None

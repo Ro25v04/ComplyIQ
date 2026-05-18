@@ -1,6 +1,8 @@
 from langchain_core.tools import tool
 from backend.llm.generator import get_client
 
+# Groq/Llama used here (not OpenAI) — reformulation is a lightweight text task
+# that doesn't need tool-calling capability, and Groq is faster and free-tier
 MODEL = "llama-3.3-70b-versatile"
 
 SYSTEM_PROMPT = """You are an Australian compliance query specialist.

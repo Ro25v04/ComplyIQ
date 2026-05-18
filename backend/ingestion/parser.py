@@ -23,6 +23,8 @@ def parse_pdf(file_path: str) -> list[ParsedPage]:
 
 
 def parse_docx(file_path: str) -> list[ParsedPage]:
+    # python-docx has no page boundary API, so the whole document is returned
+    # as a single page. The chunker handles splitting into appropriately-sized pieces.
     doc = docx.Document(file_path)
     full_text = "\n".join(p.text for p in doc.paragraphs if p.text.strip())
     return [ParsedPage(page_number=1, text=full_text)]

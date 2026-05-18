@@ -12,6 +12,8 @@ def get_client():
 
 
 def is_compliance_document(first_page_text: str) -> bool:
+    # Only the first 1500 characters of the first page are sent — enough to
+    # determine document type cheaply without processing the full content
     prompt = """You are a document classifier. Determine if the following document is a compliance, legal, or regulatory document.
 
 This includes: contracts, agreements, policies, terms of service, privacy policies, employment agreements, NDAs, regulatory filings, codes of conduct, or any document that outlines legal obligations or rights.

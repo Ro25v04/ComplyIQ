@@ -32,7 +32,8 @@ def upload_document(file: UploadFile = File(...)):
     file_bytes = file.file.read()
     suffix = os.path.splitext(file.filename)[1]
 
-    # Save to temp file so parser can read it
+    # pymupdf and python-docx require a file path, not a file-like object,
+    # so the upload bytes must be written to a temp file on disk first
     with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
         tmp.write(file_bytes)
         tmp_path = tmp.name
@@ -60,6 +61,7 @@ def upload_document(file: UploadFile = File(...)):
 
         # Save R2 key mapping for later deletion
         save_document_r2_key(file.filename, r2_key)
+        # doc_id is the UUID portion of the R2 key (e.g. "documents/<uuid>.pdf" → "<uuid>")
         doc_id = r2_key.split("/")[1].split(".")[0]
         chunks = chunk_pages(pages, document_id=doc_id, source_document=file.filename)
         embedded = embed_chunks(chunks)
