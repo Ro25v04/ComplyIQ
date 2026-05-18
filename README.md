@@ -1,4 +1,4 @@
-# ComplyAU — AI Compliance Analyst for Australian Businesses
+# ComplyAU - Compliance Analyst for Australian Businesses
 
 ComplyAU is an agentic RAG system that analyses uploaded business documents against Australian legislation and generates structured compliance reports. Upload a contract, agreement, or privacy policy and the system identifies gaps, compliant areas, and actionable recommendations across relevant Australian acts.
 
