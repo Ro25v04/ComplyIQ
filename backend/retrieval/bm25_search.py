@@ -8,7 +8,9 @@ TOP_K = 20
 
 
 def bm25_search(query: str) -> list[dict]:
-    
+    # BM25 has no persistent index — the corpus is loaded from DB and the index
+    # is rebuilt in memory on every call. Acceptable for a portfolio demo but would
+    # need an offline index (e.g. Elasticsearch) at production document volumes.
     with get_db() as conn:
         with conn.cursor() as cur:
             cur.execute("""
@@ -24,12 +26,9 @@ def bm25_search(query: str) -> list[dict]:
 
     bm25 = BM25Okapi(tokenized_chunks)
 
-    # Calculates TF and IDF across all chunks
-    
     tokenized_query = query.lower().split()
     scores = bm25.get_scores(tokenized_query)
 
-    # Get top 20 indices 
     top_indices = np.argsort(scores)[::-1][:TOP_K]
 
     results = []

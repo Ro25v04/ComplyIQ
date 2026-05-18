@@ -7,6 +7,7 @@ from backend.agent.tools.live_fetcher import live_fetcher
 from backend.agent.tools.citation_validator import citation_validator
 from backend.monitoring.langfuse_client import observe, get_client
 
+# gpt-4o-mini chosen for tool-use reliability; Groq/Llama models had inconsistent tool-call formatting
 MODEL = "gpt-4o-mini"
 
 TOOLS = [
@@ -62,6 +63,7 @@ _llm = None
 def get_llm():
     global _llm
     if _llm is None:
+        # bind_tools must be called once; rebinding per-request resets tool schemas
         _llm = ChatOpenAI(
             model=MODEL,
             api_key=settings.openai_api_key,
@@ -87,6 +89,8 @@ def run_agent(query: str, history: list[dict] | None = None) -> str:
 
     final_answer = "Agent reached maximum iterations without a final answer."
 
+    # 15 iterations: compliance questions call static_retriever + up to ~5 live_fetcher calls;
+    # extra headroom for citation_validator and query_reformulator without infinite loops
     for _ in range(15):
         response = llm.invoke(messages)
         messages.append(response)
@@ -118,6 +122,8 @@ def run_agent(query: str, history: list[dict] | None = None) -> str:
 
 def stream_agent(query: str, history: list[dict] | None = None):
     llm_with_tools = get_llm()
+    # A plain ChatOpenAI without bind_tools is used for the final generation step so
+    # the model streams text tokens rather than emitting a tool-call JSON block
     streaming_llm = ChatOpenAI(
         model=MODEL,
         api_key=settings.openai_api_key,
@@ -132,6 +138,8 @@ def stream_agent(query: str, history: list[dict] | None = None):
             messages.append(AIMessage(content=msg["content"]))
     messages.append(HumanMessage(content=query))
 
+    # Phase 1: tool-augmented model resolves all tool calls before streaming begins;
+    # LangChain's streaming API cannot interleave tool execution and text output
     # Phase 1: Run tool calls (non-streaming)
     for _ in range(10):
         response = llm_with_tools.invoke(messages)

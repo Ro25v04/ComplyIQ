@@ -27,6 +27,9 @@ async def _call_mcp_tool(tool_name: str, args: dict) -> str:
 
 
 def _run_async(tool_name: str, args: dict) -> str:
+    # FastAPI runs inside an existing event loop, so asyncio.run() raises
+    # "This event loop is already running". Spawning a fresh loop in a thread
+    # sidesteps the conflict while keeping the call synchronous to LangChain tools.
     def run_in_thread():
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)

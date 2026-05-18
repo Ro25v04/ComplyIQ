@@ -8,6 +8,9 @@ def vector_search(query: str) -> list[dict]:
 
     with get_db() as conn:
         with conn.cursor() as cur:
+            # <=> is cosine distance (0=identical, 2=opposite); 1-distance converts it
+            # to a similarity score. The HNSW index in database.py uses vector_cosine_ops
+            # so this operator hits the index rather than doing a full table scan.
             cur.execute("""
                 SELECT
                     chunk_id,

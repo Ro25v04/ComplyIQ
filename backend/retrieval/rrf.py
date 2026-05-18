@@ -1,9 +1,9 @@
 # Reciprocal Rank Fusion merges vector and BM25 results into one ranked list
 
+# RRF_K=60 is the value from the original Cormack et al. paper; it dampens the
+# advantage of rank-1 results so neither retriever can dominate on a single strong hit
 RRF_K = 60
 TOP_N = 30
-
-#rrf function that takes in a list of vector search and bm25 result lists and returns a merged rrf list with scores
 def reciprocal_rank_fusion(vector_results: list[dict], bm25_results: list[dict]) -> list[dict]:
     rrf_scores = {}  # chunk_id -> combined RRF score
     chunk_data = {}  # chunk_id -> chunk dict (to retrieve later)

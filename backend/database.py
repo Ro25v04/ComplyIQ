@@ -1,11 +1,10 @@
-# To connect to the postgres database
-
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from contextlib import contextmanager
 from backend.config import settings
 
-# all-MiniLM-L6-v2 produces 384-dimensional vectors
+# Must match the output dimension of all-MiniLM-L6-v2 in embedder.py.
+# Changing the embedding model requires dropping and recreating the chunks table.
 VECTOR_DIMENSION = 384
 
 
@@ -44,6 +43,8 @@ def init_db():
                 );
             """)
 
+            # HNSW is an approximate nearest-neighbour index; much faster than exact
+            # ivfflat for query-time lookups but takes more memory at build time
             cur.execute("""
                 CREATE INDEX IF NOT EXISTS chunks_embedding_idx
                 ON chunks

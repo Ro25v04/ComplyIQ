@@ -40,7 +40,8 @@ WHITELIST = [
     "NDB", "APP", "GDPR", "ISO", "SOC2",
     # Job titles
     "CEO", "CFO", "CTO", "COO", "HR",
-    # Common legal years that are NOT dates of birth
+    # Act years (1988, 2009 …) match the AU_DOB date pattern; whitelisting them
+    # prevents "Privacy Act 1988" from being anonymised as a date of birth
     "1988", "2009", "2001", "1958", "2011",
 ]
 
@@ -137,6 +138,8 @@ def get_engines():
 
 
 def _remove_whitelisted(text: str, results: list) -> list:
+    # Presidio has no native whitelist API; we filter detections manually by
+    # checking whether the matched span contains any whitelisted term
     filtered = []
     for result in results:
         detected_text = text[result.start:result.end]
