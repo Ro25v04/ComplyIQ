@@ -62,7 +62,7 @@ export default function AppPage() {
       const res = await fetch(`${API_URL}/upload`, { method: "POST", body: form });
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || "Upload failed");
-      setUploadMsg(`✓ ${data.filename} — ${data.chunks_indexed} chunks indexed`);
+      setUploadMsg(`✓ ${data.filename} uploaded successfully`);
       fetchDocuments();
     } catch (err: unknown) {
       setUploadMsg(`✗ ${err instanceof Error ? err.message : "Upload failed"}`);
