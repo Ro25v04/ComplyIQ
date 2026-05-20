@@ -1,6 +1,34 @@
-# ComplyAU - Compliance Analyst for Australian Businesses
+# ComplyAU - AI Compliance Analyst for Australian Businesses
 
-ComplyAU is an agentic RAG system that analyses uploaded business documents against Australian legislation and generates structured compliance reports. Upload a contract, agreement, or privacy policy and the system identifies gaps, compliant areas, and actionable recommendations across relevant Australian acts.
+ComplyAU is a production-grade agentic RAG system that analyses uploaded business documents against live Australian legislation and generates structured compliance reports. Upload a contract, employment agreement, or privacy policy and the system identifies gaps, compliant areas, and actionable recommendations - with every claim cited back to the source document or legislation.
+
+---
+
+## Business Problem
+
+Australian businesses especially SMEs, spend thousands of dollars on lawyers to answer a single question: *"Are we compliant with X?"* The Privacy Act, Fair Work Act, WHS obligations, and Corporations Act are complex, updated regularly, and expensive to interpret manually. Most small businesses either ignore compliance risk entirely or pay premium legal rates for work that is largely pattern-matching against known legislation.
+
+**ComplyAU automates that pattern-matching layer.** It won't replace a lawyer for novel legal questions, but it can answer 80% of routine compliance queries instantly, flag gaps before they become penalties, and produce a boardroom-ready report in seconds.
+
+### Market Opportunity
+
+- ~2.4 million SMEs in Australia with compliance obligations they frequently misunderstand
+- Average cost of an Australian employment lawyer: $300–600/hour
+- Privacy Act penalties post-2023 reform: up to $50M per serious breach
+- No dominant AI-native compliance tool exists for the Australian market specifically
+
+### Who Uses This
+
+| User | Use Case |
+|---|---|
+| HR teams | Check employment contracts against Fair Work Act and NES |
+| Startups | Audit privacy policies against Privacy Act / APP obligations |
+| Operations managers | Verify WHS policies before audits |
+| Accountants / consultants | White-label compliance checks for SME clients |
+
+### Why Australian-Specific Scope Is a Moat
+
+Global tools like Harvey AI and LexisNexis AI are optimised for US/UK law. Australian legislation has distinct structures (APPs, NDB scheme, Fair Work NES, Notifiable Data Breaches) that generic models handle poorly. By grounding every answer in live fetched legislation from legislation.gov.au and oaic.gov.au via a purpose-built MCP server, ComplyAU produces answers that are current, cited, and jurisdiction-accurate.
 
 ---
 
@@ -19,14 +47,14 @@ Backend (FastAPI)
       │     Query → Vector Search + BM25 → RRF → Cohere Rerank
       │
       ├── ReAct Agent (GPT-4o-mini)
-      │     ├── static_retriever   — searches uploaded documents in pgvector
-      │     ├── query_reformulator — rewrites queries for better retrieval
-      │     ├── live_fetcher       — calls MCP server over SSE
-      │     └── citation_validator — validates claims against retrieved chunks
+      │     ├── static_retriever   - searches uploaded documents in pgvector
+      │     ├── query_reformulator - rewrites queries for better retrieval
+      │     ├── live_fetcher       - calls MCP server over SSE
+      │     └── citation_validator - validates claims against retrieved chunks
       │
       └── MCP Server (Railway) ←── live_fetcher connects here via SSE
-            ├── fetch_legislation_tool  — scrapes legislation.gov.au
-            └── fetch_oaic_guidance     — scrapes oaic.gov.au
+            ├── fetch_legislation_tool  - scrapes legislation.gov.au
+            └── fetch_oaic_guidance     - scrapes oaic.gov.au
 ```
 
 ---
@@ -96,8 +124,8 @@ The legislation fetching tools are deployed as a standalone MCP server on a sepa
 The MCP server lives in a separate repository: [au-legislation-mcp](https://github.com/Ro25v04/au-legislation-mcp)
 
 Tools exposed:
-- `fetch_legislation_tool(act_name)` — fetches Australian act summaries
-- `fetch_oaic_guidance(topic)` — fetches OAIC privacy guidance
+- `fetch_legislation_tool(act_name)` - fetches Australian act summaries
+- `fetch_oaic_guidance(topic)` - fetches OAIC privacy guidance
 
 Note: most Australian government legislation sites are Cloudflare-protected or JavaScript-rendered, making automated scraping unreliable. Live scraping works for oaic.gov.au; other acts use curated static summaries based on the official act text.
 
