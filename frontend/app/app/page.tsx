@@ -194,7 +194,10 @@ export default function AppPage() {
                     <p className="text-xs font-medium text-[#D6E3FC] truncate" title={doc.filename}>
                       {doc.filename}
                     </p>
-                    <p className="text-xs text-[#78849B] mt-0.5">{doc.chunks} chunks indexed</p>
+                    <span className="inline-flex items-center gap-1 mt-1 text-[10px] font-semibold text-green-400">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                      Ready
+                    </span>
                   </div>
                   <button
                     onClick={async () => {
